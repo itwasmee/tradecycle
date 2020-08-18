@@ -15,7 +15,23 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from core.views import HomePageView, ContactPageView, AboutPageView
 
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path(
+        '/',
+        HomePageView.as_view(template='accueil.html'),
+        name='accueil'
+        ),
+    path(
+        '/a-propos/',
+        AboutPageView.as_view(template='a-propos.html'),
+        name='a-propos'
+        ),
+    path(
+        '/contact/',
+        ContactPageView.as_view(template='contact.html'),
+        name='contact'
+        ),
 ]
