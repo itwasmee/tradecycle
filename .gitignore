@@ -34,3 +34,5 @@ venv.bak/
 
 #Javascript
 node_modules/
+
+src/

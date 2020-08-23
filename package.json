@@ -1,0 +1,26 @@
+{
+  "name": "tradecycle",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "dependencies": {
+    "autoprefixer": "^9.8.6",
+    "postcss-cli": "^7.1.1",
+    "tailwindcss": "^1.7.2"
+  },
+  "devDependencies": {},
+  "scripts": {
+    "build": "postcss src/tailwind.css -o static/css/tailwind.css"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/itwasmee/tradecycle.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/itwasmee/tradecycle/issues"
+  },
+  "homepage": "https://github.com/itwasmee/tradecycle#readme"
+}

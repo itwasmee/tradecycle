@@ -1,0 +1,32 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div>
+    <div class="sm:flex md:my-20 my-10 mx-auto">
+        <img class="px-5 sm:w-1/2 mb-6 h-64 sm:h-auto w-full" src="{% static 'home/undraw_treasure_of9i.svg' %}" alt="treasure image" style="max-height: 40rem;">
+        <div class="my-auto w-full sm:w-1/2 sm:pr-10 px-5">
+            <p class="font-serif leading-none text-4xl font-light text-green-600 pb-3">Le trésor dans vos déchets</p>
+            <p class="text-xl leading-tight font-sans break-normal">Particuliers et professionels, transformons nos déchets en plus-value pour notre activité !</p>
+        </div>
+    </div>
+    <form class="w-full mx-auto max-w-sm sm:max-w-lg mb-10 md:mb-20">
+        <div class="flex items-center border-b border-green-700 py-2">
+            <input
+                class="appearance-none bg-transparent border-none w-full text-gray-700 mr-3 py-1 px-2 leading-tight focus:outline-none text-lg sm:text-xl"
+                type="text" placeholder="'Marc de café' , 'Chutes de bois'" aria-label="produit">
+            <button
+                class="flex-shrink-0 bg-green-700 border-green-700 hover:bg-green-800 hover:border-green-800 text-lg sm:text-xl border-4 text-white py-1 px-2 rounded"
+                type="button">
+                Rechercher
+            </button>
+        </div>
+    </form>
+    <p class="mx-auto w-11/12 sm:w-4/6 border-2 bg-gray-100 border-gray-100 rounded-lg px-10 py-5 text-gray-700 leading-relaxed text-lg mb-10 md:mb-20 font-serif">Beaucoup de gens ne réalisent pas la valeur qui se cache dans les déchets qu'ils produisent,
+        avec <span class="font-semibold text-green-700">TradeCycle</span> découvrez comment répondre aux besoins des autres avec vos déchets,
+        mais aussi comment profiter de ce qui est rejetté par les autres autour de vous.
+    </p>
+    <div class="">
+    </div>
+</div>
+{% endblock %}
