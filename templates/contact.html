@@ -1,5 +1,13 @@
 {% extends 'base.html' %}
 {% load static %}
 {% block content %}
-
+<p class="container mx-auto text-center text-xl text-green-600 my-20 px-8">Une question ? Une suggestion ? N'hésitez pas a nous contacter grâce au formulaire ci-dessous</p>
+<div class="flex container mx-auto my-20 border-transparent shadow-xl border-2 rounded-lg">
+    <form method="post" action="a-propos/post" class="my-auto py-4 px-8 md:h-auto w-full md:w-1/2">{% csrf_token %}
+        {{ form.as_p }}
+        <input class="bg-green-600 hover:bg-green-700 text-white mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="Envoyer">
+    </form>
+    <img class="hidden md:block sm:w-1/2 h-64 sm:h-auto w-full py-4 px-8 my-auto" src="{% static 'contact/undraw_respond_8wjt.svg' %}" alt="contact">
+</div>
+<img src="{% static 'contact/undraw_respond_8wjt.svg' %}" alt="contact" class="my-20 md:hidden h-64 w-full py-4 px-8">
 {% endblock %}

@@ -16,7 +16,7 @@ Including another URLconf
 from django.contrib import admin
 from django.urls import path
 from django.views.generic.base import TemplateView
-# from core.views import ContactPageView
+from core.views import ContactPageView
 
 urlpatterns = [
     path(
@@ -35,7 +35,7 @@ urlpatterns = [
         ),
     path(
         'contact/',
-        TemplateView.as_view(template_name='contact.html'),
+        ContactPageView.as_view(template_name='contact.html'),
         name='contact'
         ),
 ]
