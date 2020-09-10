@@ -34,5 +34,8 @@ venv.bak/
 
 #Javascript
 node_modules/
-
 src/
+
+# mac specific
+.DS_Store
+.DS_Store?

@@ -31,17 +31,21 @@ ALLOWED_HOSTS = []
 # Application definition
 
 INSTALLED_APPS = [
-    'core.apps.CoreConfig',
-    'ad.apps.AdConfig',
-    'favorite.apps.FavoriteConfig',
-    'search.apps.SearchConfig',
-    'usecase.apps.UsecaseConfig',
     'django.contrib.admin',
     'django.contrib.auth',
     'django.contrib.contenttypes',
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+
+    # Local
+
+    'core.apps.CoreConfig',
+    'ad.apps.AdConfig',
+    'favorite.apps.FavoriteConfig',
+    'search.apps.SearchConfig',
+    'usecase.apps.UsecaseConfig',
+    'accounts.apps.AccountsConfig',
 ]
 
 MIDDLEWARE = [
@@ -132,3 +136,10 @@ STATICFILES_DIRS = [
     os.path.join(BASE_DIR, 'static'),
     'static/',
 ]
+
+LOGIN_URL = "/login/"
+LOGIN_REDIRECT_URL = "/"
+LOGOUT_REDIRECT_URL = "/"
+
+AUTH_USER_MODEL = 'accounts.CustomUser'
+AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']

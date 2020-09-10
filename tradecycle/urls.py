@@ -15,27 +15,65 @@ Including another URLconf
 """
 from django.contrib import admin
 from django.urls import path
+from django.contrib.auth.views import LoginView, LogoutView
+from accounts.forms import UserRegistrationForm, AuthenticationForm
 from django.views.generic.base import TemplateView
-from core.views import ContactPageView
+from django.views.generic import CreateView, DetailView, FormView
+from core.views import ContactPageView, ProfilePageView
+from search.views import SearchView
 
 urlpatterns = [
     path(
         'admin/',
         admin.site.urls
-        ),
+    ),
     path(
         '',
         TemplateView.as_view(template_name='accueil.html'),
         name='accueil'
-        ),
+    ),
     path(
         'a-propos/',
         TemplateView.as_view(template_name='a-propos.html'),
         name='a-propos'
-        ),
+    ),
     path(
         'contact/',
         ContactPageView.as_view(template_name='contact.html'),
         name='contact'
+    ),
+    path(
+        'profil/',
+        ProfilePageView.as_view(template_name='profil.html'),
+        name='profil'
+    ),
+    path(
+        "login/",
+        LoginView.as_view(
+            template_name="login.html",
+            form_class=AuthenticationForm
+            ),
+        name="login"
+    ),
+    path(
+        "logout/",
+        LogoutView.as_view(
+            template_name="logout.html"
         ),
+        name="logout",
+    ),
+    path(
+        "inscription/",
+        CreateView.as_view(
+            template_name="inscription.html",
+            form_class=UserRegistrationForm,
+            success_url='/'
+        ),
+        name="inscription",
+    ),
+    path(
+        "recherche/",
+        SearchView.as_view(),
+        name="recherche"
+    )
 ]

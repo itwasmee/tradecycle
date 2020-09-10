@@ -25,8 +25,14 @@ class TestContactPageView(TestCase):
             'contact',
             {
                 'email': 'tradecycle@tradecycle.fr',
-                'title': 'testing the contact form',
+                'subject': 'testing the contact form',
                 'message': 'Hello World'
             }
         )
-        self.assertEqual(response.status_code, 302)
+        self.assertEqual(response.status_code, 300)
+
+
+class TestProfilePageView(TestCase):
+    def test_profilepage(self):
+        response = self.client.get(reverse('profil'))
+        self.assertEqual(response.status_code, 200)

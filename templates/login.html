@@ -1,0 +1,19 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<p class="container mx-auto text-center text-xl my-20 px-8"><span class=" text-green-600 text-4xl">Bonjour</span></br>Complétez le formulaire ci dessous pour vous connecter.</p>
+<div class="container mx-auto my-20 ">
+    <form method="post" action="/login/" class="border-transparent my-auto py-4 px-8 lg:w-1/2 mx-auto">{% csrf_token %}
+        <style>
+            .errorlist {
+                color: red
+            }
+        </style>
+        {{ form.as_p }}
+        <input class=" mr-3 bg-green-600 hover:bg-green-700 text-white mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="Connexion">
+        <input type="hidden" name="next" value="/profil/">
+        Vous n'avez pas encore de compte ?
+        <a href="/inscription" class="text-black ml-1">Inscrivez-vous</a>
+    </form>
+</div>
+{% endblock %}
