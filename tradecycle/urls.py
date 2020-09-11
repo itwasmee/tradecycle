@@ -18,7 +18,7 @@ from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from accounts.forms import UserRegistrationForm, AuthenticationForm
 from django.views.generic.base import TemplateView
-from django.views.generic import CreateView, DetailView, FormView
+from django.views.generic import CreateView
 from core.views import ContactPageView, ProfilePageView
 from search.views import SearchView
 
@@ -43,7 +43,7 @@ urlpatterns = [
         name='contact'
     ),
     path(
-        'profil/',
+        'profil/<slug>',
         ProfilePageView.as_view(template_name='profil.html'),
         name='profil'
     ),
@@ -67,7 +67,7 @@ urlpatterns = [
         CreateView.as_view(
             template_name="inscription.html",
             form_class=UserRegistrationForm,
-            success_url='/'
+            success_url='/login'
         ),
         name="inscription",
     ),

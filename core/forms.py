@@ -51,7 +51,11 @@ class ProfileForm(forms.ModelForm):
         super().__init__(*args, **kwargs)
         self.fields['picture'].widget.attrs['class'] = self.style
         self.fields['activity'].widget.attrs['class'] = self.style
+        self.fields['activity'].initial = ''
+        self.fields['activity'].widget.attrs['placeholder'] = 'example : Agriculteur'
         self.fields['location'].widget.attrs['class'] = self.style
+        self.fields['location'].initial = ''
+        self.fields['location'].widget.attrs['placeholder'] = 'example : Vire'
 
     class Meta:
         model = Profile

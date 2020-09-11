@@ -143,3 +143,6 @@ LOGOUT_REDIRECT_URL = "/"
 
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
+
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
+MEDIA_URL = '/'
