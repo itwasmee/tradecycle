@@ -1,5 +1,6 @@
 from django.test import TestCase
 from django.urls import reverse
+from accounts.models import CustomUser
 # Create your tests here.
 
 
@@ -33,6 +34,32 @@ class TestContactPageView(TestCase):
 
 
 class TestProfilePageView(TestCase):
+    def setUp(self):
+        self.client.post(
+            "/signup/",
+            {
+                "username": "Jojo",
+                "email": "jojo.dio@zawarudo.com",
+                "password1": "itwasmedio",
+                "password2": "itwasmedio",
+            },
+        )
+        self.client.post(
+            "/login/",
+            {
+                "email": "jojo.dio@zawarudo.com",
+                "password": "itwasmedio",
+            }
+        )
+
     def test_profilepage(self):
-        response = self.client.get(reverse('profil'))
+        print(CustomUser.objects.get(username='Jojo').id)
+        response = self.client.get(
+            reverse(
+                'profil', args={
+                    "slug": CustomUser.objects.get(username='Jojo').id
+                    }
+                )
+            )
+        print(response)
         self.assertEqual(response.status_code, 200)

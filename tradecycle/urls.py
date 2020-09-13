@@ -51,7 +51,8 @@ urlpatterns = [
         "login/",
         LoginView.as_view(
             template_name="login.html",
-            form_class=AuthenticationForm
+            form_class=AuthenticationForm,
+            success_url="/",
             ),
         name="login"
     ),
@@ -63,13 +64,13 @@ urlpatterns = [
         name="logout",
     ),
     path(
-        "inscription/",
+        "signup/",
         CreateView.as_view(
-            template_name="inscription.html",
+            template_name="signup.html",
             form_class=UserRegistrationForm,
             success_url='/login'
         ),
-        name="inscription",
+        name="signup",
     ),
     path(
         "recherche/",
