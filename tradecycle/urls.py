@@ -14,13 +14,14 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path
+from django.urls import path, include, re_path
 from django.contrib.auth.views import LoginView, LogoutView
 from accounts.forms import UserRegistrationForm, AuthenticationForm
 from django.views.generic.base import TemplateView
 from django.views.generic import CreateView
 from core.views import ContactPageView, ProfilePageView
 from search.views import SearchView
+from ad.views import AdPostView, DeleteAdView, DetailView
 
 urlpatterns = [
     path(
@@ -75,6 +76,31 @@ urlpatterns = [
     path(
         "recherche/",
         SearchView.as_view(),
-        name="recherche"
-    )
+        name="recherche",
+    ),
+    path(
+        "deposer-une-annonce/",
+        AdPostView.as_view(
+            template_name='deposer-une-annonce.html'
+        ),
+        name="deposer-une-annonce",
+    ),
+    path(
+        "delete_ad/<pk>",
+        DeleteAdView.as_view(),
+        name="supprimer",
+    ),
+    path(
+        "search/",
+        SearchView.as_view(template_name="search.html"),
+        name="search",
+    ),
+    path(
+        "ad/<pk>",
+        DetailView.as_view(
+            template_name="ad.html"
+        ),
+        name="ad",
+    ),
+    re_path("messages/", include("pinax.messages.urls", namespace="pinax_messages")),
 ]

@@ -42,10 +42,17 @@ INSTALLED_APPS = [
 
     'core.apps.CoreConfig',
     'ad.apps.AdConfig',
-    'favorite.apps.FavoriteConfig',
     'search.apps.SearchConfig',
     'usecase.apps.UsecaseConfig',
     'accounts.apps.AccountsConfig',
+
+    # PostgreSQL
+
+    'django.contrib.postgres',
+
+    # Messaging
+
+    "pinax.messages",
 ]
 
 MIDDLEWARE = [
@@ -67,6 +74,7 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
+                'pinax.messages.context_processors.user_messages',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',

@@ -1,16 +1,16 @@
 # from django.shortcuts import render
-from django.views.generic.edit import FormView
-from django.views.generic.detail import DetailView
-from django.views.generic.base import TemplateView
-from core.models import Profile
-from core.forms import ContactForm, ProfileForm
-from django.contrib.auth.mixins import LoginRequiredMixin
-from django.contrib.auth import get_user_model
-from django.shortcuts import redirect
-from django.utils.datastructures import MultiValueDictKeyError
 import os
-from tradecycle.settings import MEDIA_ROOT
 
+from django.contrib.auth import get_user_model
+from accounts.models import CustomUser
+from django.contrib.auth.mixins import LoginRequiredMixin
+from django.shortcuts import redirect
+from django.views.generic.detail import DetailView
+from django.views.generic.edit import FormView
+from core.forms import ContactForm, ProfileForm
+from core.models import Profile
+from tradecycle.settings import MEDIA_ROOT
+from ad.models import Ad
 
 # Create your views here.
 
@@ -29,28 +29,33 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
     form_class = ProfileForm
     slug_field = "user_id"
 
-    def post(self, request, *args, **kwargs):
-        user = get_user_model().objects.get(id=request.user.id)
+    def form_valid(self, form):
+        user = get_user_model().objects.get(id=self.request.user.id)
         profile = Profile.objects.get(user=user.id)
-        form = ProfileForm(request.POST)
-        if form.is_valid():
-            if request.FILES.get('picture'):
-                profile.picture = request.FILES.get('picture')
-                profile.picture.name = f"{user.id}.{profile.picture.name.lower().split('.').pop(1)}"
-            if request.POST.get('activity') != '':
-                profile.activity = request.POST.get('activity')
-            if request.POST.get('location') != '':
-                profile.location = request.POST.get('location')
-            
-            if Profile.objects.get(user=user).picture:
-                name = "/user_profile/" + profile.picture.name
-                location = MEDIA_ROOT
-                path = location + name
-                print(path)
-                try:
-                    os.remove(path)
-                except FileNotFoundError:
-                    print('NONE FOUND')
-            profile.save()
-
+        if form.instance.picture:
+            profile.picture = form.instance.picture
+            profile.picture.name = (
+                f"{user.id}.{profile.picture.name.lower().split('.').pop(1)}"
+            )
+        if form.instance.activity != '':
+            profile.activity = form.instance.activity
+        if form.instance.location != '':
+            profile.location = form.instance.location
+        if Profile.objects.get(user=user).picture:
+            name = "/user_profile/" + profile.picture.name
+            location = MEDIA_ROOT
+            path = location + name
+            try:
+                os.remove(path)
+            except FileNotFoundError:
+                print(f'No picture found at {path}')
+        profile.save()
+        # TODO:Image crop
         return redirect(f"/profil/{user.id}")
+
+    def get_context_data(self, **kwargs):
+        context_data = super(ProfilePageView, self).get_context_data(**kwargs)
+        user = get_user_model().objects.get(username=self.request.user)
+        user_ads = Ad.objects.filter(user_id=user)
+        context_data["user_ads"] = user_ads
+        return context_data

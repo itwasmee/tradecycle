@@ -22,8 +22,3 @@ class Profile(models.Model):
 
     def __str__(self):
         return f'{self.user}\'s profile'
-
-
-class Myad(models.Model):
-    user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
-    ad = models.ForeignKey(Ad, on_delete=models.CASCADE)

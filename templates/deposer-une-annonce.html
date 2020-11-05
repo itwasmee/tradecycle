@@ -1,0 +1,17 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+<p class="container mx-auto text-center text-xl my-20 px-8"><span class=" text-green-600 text-4xl">Déposer une annonce</span></br>Créez une annonce et publiez la a l'aide du formulaire ci-dessous.</p>
+<div class="container mx-auto my-20 ">
+    <form method="post" action="/deposer-une-annonce/" class="border-transparent my-auto py-4 px-8 lg:w-1/2 mx-auto" enctype="multipart/form-data">
+        {% csrf_token %}
+        <style>
+            .errorlist {
+                color: red
+            }
+        </style>
+        {{ form.as_p }}
+        <input class=" mr-3 bg-green-600 hover:bg-green-700 text-white mt-2 py-2 px-4 rounded focus:outline-none focus:shadow-outline" type="submit" value="Créer">
+    </form>
+</div>
+{% endblock %}

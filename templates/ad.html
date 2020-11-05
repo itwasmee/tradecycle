@@ -1,0 +1,11 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+{{ ad.title }}
+<img src="{% static 'media/'|add:ad.image.url %}" alt="">
+{{ ad.description }}
+{{ ad.action }}
+{{ ad.city }}
+<a href="{% url 'pinax_messages:inbox' %}"><i class="fa fa-envelope"></i>Message Inbox</a>
+{% endblock %}

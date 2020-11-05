@@ -3,7 +3,7 @@
 {% block content %}
 <p class="container mx-auto text-center text-xl my-20 px-8"><span class=" text-green-600 text-4xl">Bienvenue</span></br>Créez votre compte grâce au formulaire ci-dessous pour pofiter de toutes les fonctionnalités de TradeCycle.</p>
 <div class="container mx-auto my-20 ">
-    <form method="post" action="/inscription/" class="border-transparent my-auto py-4 px-8 lg:w-1/2 mx-auto">{% csrf_token %}
+    <form method="post" action="/signup/" class="border-transparent my-auto py-4 px-8 lg:w-1/2 mx-auto">{% csrf_token %}
         <style>
             .errorlist {
                 color: red
