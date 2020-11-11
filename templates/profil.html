@@ -68,32 +68,34 @@
 <div class="container mx-auto px-5 my-6 sm:my-16">
     {% for ad in user_ads %}
     <div class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border-transparent shadow-md hover:shadow-lg">
-        <span id="ad_id" hidden>{{ ad.id }}</span>
-        <div class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
-            <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
-        </div>
-        <div class="bg-white p-2 sm:p-4 w-full">
-            <div class="sm:mb-8">
-                <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
-                <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
-                
+        <a href="/ad/{{ ad.id }}">
+            <span id="ad_id" hidden>{{ ad.id }}</span>
+            <div class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
+                <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
             </div>
-            <div class="pt-3">
-                <p class="text-gray-600 items-center text-sm sm:text-base">
-                    {{ ad.city }}
-                </p>
-                <div class="text-sm sm:text-md">
-                    <p class="text-gray-600">{{ ad.created_at.day }}/{{ ad.created_at.month }}, à {{ ad.created_at.time }}</p>
+            <div class="bg-white p-2 sm:p-4 w-full">
+                <div class="sm:mb-8">
+                    <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
+                    <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
+                    
+                </div>
+                <div class="pt-3">
+                    <p class="text-gray-600 items-center text-sm sm:text-base">
+                        {{ ad.city }}
+                    </p>
+                    <div class="text-sm sm:text-md">
+                        <p class="text-gray-600">{{ ad.created_at.day }}/{{ ad.created_at.month }}, à {{ ad.created_at.time }}</p>
+                    </div>
                 </div>
             </div>
-        </div>
-        <div x-data="deleteAd" class="p-2 sm:p-4 bg-white">
-            <button type="submit" value="" x-on:click="deleteAd()" class="focus:outline-none">
-                <svg class="text-red-700 fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                    <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"/>
-                </svg>
-            </button>
-        </div>
+            <div x-data="deleteAd" class="p-2 sm:p-4 bg-white">
+                <button type="submit" value="" x-on:click="deleteAd()" class="focus:outline-none">
+                    <svg class="text-red-700 fill-current h-6 w-6" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
+                        <path d="M6 2l2-2h4l2 2h4v2H2V2h4zM3 6h14l-1 14H4L3 6zm5 2v10h1V8H8zm3 0v10h1V8h-1z"/>
+                    </svg>
+                </button>
+            </div>
+        </a>
         <script>
             const id = document.getElementById("ad_id").innerText;
             console.log(id);

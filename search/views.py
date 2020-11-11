@@ -14,11 +14,22 @@ class SearchView(ListView):
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
         query = self.request.GET.get("query")
-        queryset = Ad.objects.filter(
-            title__unaccent__icontains=query
-        ).order_by('created_at')
+        location = self.request.GET.get("location")
+
+        if location is True:
+            queryset = Ad.objects.filter(
+                title__unaccent__icontains=query  # unaccent is a Postgresql specific module
+            ).filter(
+                city__unaccent__icontains=location
+            ).order_by('created_at')
+        else:
+            queryset = Ad.objects.filter(
+                title__unaccent__icontains=query  # TODO add 'field required' to one field only
+            ).order_by('created_at')
+
         page = self.request.GET.get("page")
         paginator = Paginator(queryset, self.paginate_by)
+
         try:
             results = paginator.page(page)
         except PageNotAnInteger:
@@ -26,5 +37,4 @@ class SearchView(ListView):
         except EmptyPage:
             results = paginator.page(paginator.num_pages)
         context["results"] = results
-        context["query"] = query
         return context

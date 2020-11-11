@@ -94,7 +94,7 @@ DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
         'NAME': 'tradecycledb',
-        'USER': '',
+        'USER': 'itwasme',
         'PASSWORD': '',
         'HOST': '',
         'PORT': '5432',
