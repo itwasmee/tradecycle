@@ -23,28 +23,26 @@
         </form>
     </div>
     {% for ad in results %}
-    <div class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden">
-        <a href="/ad/{{ ad.id }}"></a>
-            <div class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
-                <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
+    <a class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden" href="/ad/{{ ad.id }}">
+        <div class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
+            <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
+        </div>
+        <div class="bg-white p-2 sm:p-4 w-full">
+            <div class="sm:mb-8">
+                <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
+                <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
+                
             </div>
-            <div class="bg-white p-2 sm:p-4 w-full">
-                <div class="sm:mb-8">
-                    <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
-                    <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
-                    
-                </div>
-                <div class="pt-3">
-                    <p class="text-gray-600 items-center text-sm sm:text-base uppercase font-bold tracking-wide">
-                        {{ ad.city }}
-                    </p>
-                    <div class="text-sm sm:text-md">
-                        <p class="text-gray-600">{{ ad.created_at.day }}/{{ ad.created_at.month }}, à {{ ad.created_at.time }}</p>
-                    </div>
+            <div class="pt-3">
+                <p class="text-gray-600 items-center text-sm sm:text-base uppercase font-bold tracking-wide">
+                    {{ ad.city }}
+                </p>
+                <div class="text-sm sm:text-md">
+                    <p class="text-gray-600">{{ ad.created_at.day }}/{{ ad.created_at.month }}, à {{ ad.created_at.time }}</p>
                 </div>
             </div>
-        </a>
-    </div>
+        </div>
+    </a>
     {% endfor %}
 </div>
 {% endblock %}

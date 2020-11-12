@@ -102,5 +102,5 @@ urlpatterns = [
         ),
         name="ad",
     ),
-    re_path("messages/", include("pinax.messages.urls", namespace="pinax_messages")),
+    path('', include('django_private_chat.urls'))
 ]

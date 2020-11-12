@@ -51,8 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     # Messaging
-
-    "pinax.messages",
+    'django_private_chat',
 ]
 
 MIDDLEWARE = [
@@ -74,7 +73,6 @@ TEMPLATES = [
         'APP_DIRS': True,
         'OPTIONS': {
             'context_processors': [
-                'pinax.messages.context_processors.user_messages',
                 'django.template.context_processors.debug',
                 'django.template.context_processors.request',
                 'django.contrib.auth.context_processors.auth',
@@ -154,3 +152,7 @@ AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
 MEDIA_URL = '/'
+
+CHAT_WS_SERVER_HOST = 'localhost'
+CHAT_WS_SERVER_PORT = 5002
+CHAT_WS_SERVER_PROTOCOL = 'ws'
