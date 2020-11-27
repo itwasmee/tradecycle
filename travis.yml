@@ -1,0 +1,15 @@
+language: python
+python: 
+  - "3.8.2"
+services:
+  - postgresql
+
+install:
+  - pip install -r requirements.txt
+before_script:
+  - psql -c 'createuser -s tradecycle;'
+  - psql -c 'create database tradecycledb;' -U tradecycle
+
+script: 
+  - ./manage.py migrate
+  - ./manage.py test
