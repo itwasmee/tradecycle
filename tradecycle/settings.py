@@ -87,18 +87,28 @@ WSGI_APPLICATION = 'tradecycle.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-
-DATABASES = {
-    'default': {
-        'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'tradecycledb',
-        'USER': 'itwasme',
-        'PASSWORD': '',
-        'HOST': '',
-        'PORT': '5432',
+if os.environ['TRAVIS'] == True:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'tradecycledb',
+            'USER': 'psotgres',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '5432',
+        }
     }
-}
-
+else:
+    DATABASES = {
+        'default': {
+            'ENGINE': 'django.db.backends.postgresql',
+            'NAME': 'tradecycledb',
+            'USER': 'itwasme',
+            'PASSWORD': '',
+            'HOST': '',
+            'PORT': '5432',
+        }
+    }
 
 # Password validation
 # https://docs.djangoproject.com/en/3.1/ref/settings/#auth-password-validators
