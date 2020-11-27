@@ -32,7 +32,7 @@ venv/
 ENV/
 env.bak/
 venv.bak/
-
+.vscode
 #Javascript
 node_modules/
 src/

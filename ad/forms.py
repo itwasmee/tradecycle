@@ -20,7 +20,7 @@ class AdPostForm(forms.ModelForm):
         self.fields['action'].widget.attrs['class'] = self.style_radio
         self.fields['action'].widget.attrs['required'] = "required"
         self.fields['image'].widget.attrs['class'] = self.style
-        self.fields['image'].widget.attrs['required'] = "required"
+        '''self.fields['image'].widget.attrs['required'] = "required"'''
         self.fields['city'].widget.attrs['class'] = self.style
         self.fields['city'].widget.attrs['required'] = "required"
 

@@ -51,7 +51,7 @@
                 <a href="/favoris/">Favoris</a>
             </div>
             <div class="m-2 hover:text-gray-900 block pb-3 pt-2 px-3">
-                <a href="/profil/{{ user_id }}">Profile</a>
+                <a href="/profil/">Profile</a>
             </div>
         </div>
         <div class="hidden md:flex">
@@ -65,14 +65,12 @@
                 <a href="/favoris/">Favoris</a>
             </div>
             <div class="m-2 text-center hover:text-gray-900 block py-2 px-3">
-                <a href="/profil/{{ user.id }}">Profile</a>
+                <a href="/profil/">Profile</a>
             </div>
         </div>
     </nav>
     <section>
-        {% block css %}{% endblock css %}
         {% block content %}{% endblock content %}
-        {% block extra_js %}{% endblock extra_js %}
     </section>
     <footer class="h-16 w-full bg-green-600 flex text-white font-bold">
         <a class="inline hover:text-gray-900 mx-auto my-auto text-center" href="/contact/">Contactez-nous</a>

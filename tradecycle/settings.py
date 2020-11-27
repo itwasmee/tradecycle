@@ -51,7 +51,7 @@ INSTALLED_APPS = [
     'django.contrib.postgres',
 
     # Messaging
-    'django_private_chat',
+    # 'django_private_chat',
 ]
 
 MIDDLEWARE = [
@@ -150,9 +150,5 @@ LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/test_media" if DEBUG else "static/media")
 MEDIA_URL = '/'
-
-CHAT_WS_SERVER_HOST = 'localhost'
-CHAT_WS_SERVER_PORT = 5002
-CHAT_WS_SERVER_PROTOCOL = 'ws'

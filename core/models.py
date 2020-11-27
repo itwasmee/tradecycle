@@ -1,5 +1,4 @@
 from django.db import models
-from ad.models import Ad
 from tradecycle.settings import AUTH_USER_MODEL
 
 # Create your models here.
@@ -10,7 +9,7 @@ class Profile(models.Model):
         AUTH_USER_MODEL, on_delete=models.CASCADE
         )
     picture = models.ImageField(
-        upload_to='user_profile/', blank=True, default=False, unique=True
+        upload_to='user_profile/', blank=True, default=False
         )
     activity = models.CharField(
         max_length=30, blank=True, default='Non renseigné'

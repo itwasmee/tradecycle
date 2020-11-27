@@ -1,7 +1,15 @@
 from django.db import models
 from tradecycle.settings import AUTH_USER_MODEL
-
+from django.contrib.postgres.operations import UnaccentExtension
+from django.db import migrations
 # Create your models here.
+
+
+class Migrations(migrations.Migration):
+    operations = [
+            UnaccentExtension(),
+            ...
+        ]
 
 
 class Ad(models.Model):
@@ -14,7 +22,7 @@ class Ad(models.Model):
     created_at = models.DateTimeField(auto_now_add=True)
     user_id = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     description = models.TextField(max_length=200)
-    image = models.ImageField(upload_to='ads/photos')
+    image = models.ImageField(upload_to='ads/photos', blank=True)
     city = models.CharField(max_length=50)
 
     def __str__(self):

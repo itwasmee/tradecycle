@@ -1,16 +1,16 @@
 # from django.shortcuts import render
 import os
 
+from ad.models import Ad
 from django.contrib.auth import get_user_model
-from accounts.models import CustomUser
-from django.contrib.auth.mixins import LoginRequiredMixin
+from django.contrib.auth.mixins import LoginRequiredMixin, UserPassesTestMixin
 from django.shortcuts import redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
+from tradecycle.settings import MEDIA_ROOT
+
 from core.forms import ContactForm, ProfileForm
 from core.models import Profile
-from tradecycle.settings import MEDIA_ROOT
-from ad.models import Ad
 
 # Create your views here.
 
@@ -27,8 +27,10 @@ class ContactPageView(FormView):
 class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
     model = Profile
     form_class = ProfileForm
-    slug_field = "user_id"
 
+    def get_object(self):
+        return Profile.objects.get(user=self.request.user)
+    
     def form_valid(self, form):
         user = get_user_model().objects.get(id=self.request.user.id)
         profile = Profile.objects.get(user=user.id)
@@ -51,7 +53,7 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
                 print(f'No picture found at {path}')
         profile.save()
         # TODO:Image crop
-        return redirect(f"/profil/{user.id}")
+        return redirect("/profil/")
 
     def get_context_data(self, **kwargs):
         context_data = super(ProfilePageView, self).get_context_data(**kwargs)

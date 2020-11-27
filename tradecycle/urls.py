@@ -21,7 +21,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import CreateView
 from core.views import ContactPageView, ProfilePageView
 from search.views import SearchView
-from ad.views import AdPostView, DeleteAdView, DetailView
+from ad.views import AdPostView, DeleteAdView, DetailAdView
 
 urlpatterns = [
     path(
@@ -44,7 +44,7 @@ urlpatterns = [
         name='contact'
     ),
     path(
-        'profil/<slug>',
+        'profil/',
         ProfilePageView.as_view(template_name='profil.html'),
         name='profil'
     ),
@@ -97,10 +97,10 @@ urlpatterns = [
     ),
     path(
         "ad/<pk>",
-        DetailView.as_view(
+        DetailAdView.as_view(
             template_name="ad.html"
         ),
         name="ad",
     ),
-    path('', include('django_private_chat.urls'))
+    # path('', include('django_private_chat.urls'))
 ]
