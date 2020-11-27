@@ -7,8 +7,7 @@ services:
 install:
   - pip install -r requirements.txt
 before_script:
-  - psql -c 'createuser -s tradecycle;'
-  - psql -c 'create database tradecycledb;' -U tradecycle
+  - psql -c 'create database tradecycledb;' -U postgres
 
 script: 
   - ./manage.py migrate
