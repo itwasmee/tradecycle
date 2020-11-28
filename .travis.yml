@@ -1,8 +1,13 @@
 language: python
+
 python: 
   - "3.8.2"
+
 services:
   - postgresql
+
+addons:
+  postgresql: "12"
 
 install:
   - pip install -r requirements.txt
@@ -10,6 +15,7 @@ before_script:
   - psql -c 'create database tradecycledb;' -U postgres
   - psql -c 'create extension if not exists unaccent;' -U postgres
 
-script: 
+script:
+  - ./manage.py makemigrations
   - ./manage.py migrate
   - ./manage.py test
