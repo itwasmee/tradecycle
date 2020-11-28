@@ -93,7 +93,7 @@ if istravis:
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
             'NAME': 'tradecycledb',
-            'USER': 'psotgres',
+            'USER': 'postgres',
             'PASSWORD': '',
             'HOST': '',
             'PORT': '5432',
