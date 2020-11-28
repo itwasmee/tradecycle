@@ -1,15 +1,6 @@
 from django.db import models
 from tradecycle.settings import AUTH_USER_MODEL
-from django.contrib.postgres.operations import UnaccentExtension
-from django.db import migrations
 # Create your models here.
-
-
-class Migrations(migrations.Migration):
-    operations = [
-            UnaccentExtension(),
-            ...
-        ]
 
 
 class Ad(models.Model):

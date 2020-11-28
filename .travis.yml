@@ -8,6 +8,7 @@ install:
   - pip install -r requirements.txt
 before_script:
   - psql -c 'create database tradecycledb;' -U postgres
+  - psql -c 'create extension if not exists unaccent;' -U postgres
 
 script: 
   - ./manage.py migrate
