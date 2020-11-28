@@ -87,7 +87,8 @@ WSGI_APPLICATION = 'tradecycle.wsgi.application'
 
 # Database
 # https://docs.djangoproject.com/en/3.1/ref/settings/#databases
-if os.environ['TRAVIS'] == True:
+istravis = os.environ.get('TRAVIS') == 'true'
+if istravis:
     DATABASES = {
         'default': {
             'ENGINE': 'django.db.backends.postgresql',
