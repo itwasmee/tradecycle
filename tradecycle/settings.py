@@ -11,10 +11,13 @@ https://docs.djangoproject.com/en/3.1/ref/settings/
 """
 import os
 from pathlib import Path
+import environ
 
 # Build paths inside the project like this: BASE_DIR / 'subdir'.
 BASE_DIR = Path(__file__).resolve(strict=True).parent.parent
 
+env = environ.Env()
+environ.Env.read_env()  # reading .env file
 
 # Quick-start development settings - unsuitable for production
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
@@ -50,8 +53,6 @@ INSTALLED_APPS = [
 
     'django.contrib.postgres',
 
-    # Messaging
-    # 'django_private_chat',
 ]
 
 MIDDLEWARE = [
@@ -163,3 +164,11 @@ AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
 MEDIA_ROOT = os.path.join(BASE_DIR, "static/test_media" if DEBUG else "static/media")
 MEDIA_URL = '/'
+
+EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"
+DEFAULT_FROM_EMAIL = "tradecycler@gmail.com"
+EMAIL_PORT = 587
+EMAIL_HOST = "smtp.gmail.com"
+EMAIL_USE_TLS = True
+EMAIL_HOST_USER = env('HOST_USER')
+EMAIL_HOST_PASSWORD = env('HOST_PASSWORD')

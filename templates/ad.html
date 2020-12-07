@@ -12,7 +12,7 @@
             <div class="w-2/3 lg:w-full mx-auto rounded-md border-2 border-gray-800 text-center p-3 break-words">
                 Publié par :
                 <p class="text-lg text-gray-700">{{ ad.user_id }}</p>
-                <button class="focus:outline-none outline-none bg-green-600 hover:bg-white hover:text-green-700 text-white font-bold text-sm rounded-md py-1 px-3 mt-3" type="submit">Envoyer un message</button>
+                <a href="/send-message/{{ ad.id }}" class="focus:outline-none outline-none bg-green-600 hover:bg-white hover:text-green-700 text-white font-bold text-sm rounded-md py-1 px-3 mt-3" type="submit">Envoyer un message</a>
             </div>
         </div>
     </div>
@@ -20,9 +20,5 @@
         {{ ad.description }}
     </p>
     Lieu : {{ ad.city }}
-    
-    <!--
-        <a href="/dialogs/">MESSAGE</a>
-    -->
 </div>
 {% endblock %}

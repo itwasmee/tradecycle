@@ -19,7 +19,7 @@ from django.contrib.auth.views import LoginView, LogoutView
 from accounts.forms import UserRegistrationForm, AuthenticationForm
 from django.views.generic.base import TemplateView
 from django.views.generic import CreateView
-from core.views import ContactPageView, ProfilePageView
+from core.views import ContactPageView, ProfilePageView, SendMessageView
 from search.views import SearchView
 from ad.views import AdPostView, DeleteAdView, DetailAdView
 
@@ -102,5 +102,12 @@ urlpatterns = [
         ),
         name="ad",
     ),
+    path(
+        "send-message/<pk>",
+        SendMessageView.as_view(
+            template_name="send-message.html"
+        ),
+        name="send-message"
+    )
     # path('', include('django_private_chat.urls'))
 ]
