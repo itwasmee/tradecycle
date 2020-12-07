@@ -108,6 +108,13 @@ urlpatterns = [
             template_name="send-message.html"
         ),
         name="send-message"
+    ),
+    path(
+        "thank-you/",
+        TemplateView.as_view(
+            template_name="contact-success.html"
+        ),
+        name="thank-you"
     )
     # path('', include('django_private_chat.urls'))
 ]

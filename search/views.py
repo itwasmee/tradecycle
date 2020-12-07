@@ -4,10 +4,8 @@ from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from ad.models import Ad
 
 
-# Create your views here.
-
-
 class SearchView(ListView):
+    """ displays ads related to the search terms or city"""
     model = Ad
     paginate_by = 50
 

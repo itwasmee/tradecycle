@@ -6,5 +6,6 @@ from core.models import Profile
 
 @receiver(post_save, sender=get_user_model())
 def create_profile(sender, instance, created, **kwargs):
+    """creates a Profile instance when an account is created"""
     if created:
         Profile.objects.create(user=instance)
