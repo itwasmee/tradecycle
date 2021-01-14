@@ -115,6 +115,19 @@ urlpatterns = [
             template_name="contact-success.html"
         ),
         name="thank-you"
-    )
-    # path('', include('django_private_chat.urls'))
+    ),
+    path(
+        "mentions-legales/",
+        TemplateView.as_view(
+            template_name="mentions-legales.html"
+        ),
+        name="legal-notice"
+    ),
+    path(
+        "usages/",
+        TemplateView.as_view(
+            template_name="usages.html"
+        ),
+        name="usages"
+    ),
 ]

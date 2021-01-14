@@ -7,6 +7,7 @@ from django.core.mail import send_mail
 from django.shortcuts import redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
+from django.views.generic.list import ListView
 from tradecycle.settings import DEFAULT_FROM_EMAIL, MEDIA_ROOT
 from PIL import Image
 
@@ -89,7 +90,7 @@ def lower_quality(path):
 
 
 class SendMessageView(FormView, DetailView):
-    """ Displayes form used to send a message to the poster of the ad and sends it upon form validation"""
+    """ Displays form used to send a message to the poster of the ad and sends it upon form validation"""
 
     model = Ad
     form_class = MessageForm
@@ -106,3 +107,11 @@ class SendMessageView(FormView, DetailView):
             recipient_list=[user.email],
         )
         return redirect("/")
+
+
+class FavoritesView(LoginRequiredMixin, ListView):
+    model = Ad
+    paginate_by = 20
+    
+    def get_context_data(self, request):
+        pass
