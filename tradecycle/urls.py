@@ -21,7 +21,7 @@ from django.views.generic.base import TemplateView
 from django.views.generic import CreateView
 from core.views import ContactPageView, ProfilePageView, SendMessageView
 from search.views import SearchView
-from ad.views import AdPostView, DeleteAdView, DetailAdView
+from ad.views import AdPostView, DeleteAdView, DetailAdView, FavoritesView, FavAddView
 
 urlpatterns = [
     path(
@@ -112,7 +112,7 @@ urlpatterns = [
     path(
         "thank-you/",
         TemplateView.as_view(
-            template_name="contact-success.html"
+            template_name="thank-you.html"
         ),
         name="thank-you"
     ),
@@ -121,7 +121,7 @@ urlpatterns = [
         TemplateView.as_view(
             template_name="mentions-legales.html"
         ),
-        name="legal-notice"
+        name="mentions-legales"
     ),
     path(
         "usages/",
@@ -129,5 +129,17 @@ urlpatterns = [
             template_name="usages.html"
         ),
         name="usages"
+    ),
+    path(
+        "favoris/",
+        FavoritesView.as_view(
+            template_name="favoris.html"
+        ),
+        name="favoris"
+    ),
+    path(
+        "fav_ad/<pk>",
+        FavAddView.as_view(),
+        name="fav_ad",
     ),
 ]

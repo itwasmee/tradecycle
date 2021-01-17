@@ -1,7 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.list import ListView
 from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
-from ad.models import Ad
+from ad.models import Ad, Favorite
 
 
 class SearchView(ListView):
@@ -35,4 +35,9 @@ class SearchView(ListView):
         except EmptyPage:
             results = paginator.page(paginator.num_pages)
         context["results"] = results
+        for ad in results:
+            if self.request.user.id:
+                ad.is_fav = Favorite.is_favorite(ad, self.request.user)
+            else:
+                ad.is_fav = False
         return context

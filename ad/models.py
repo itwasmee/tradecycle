@@ -23,3 +23,15 @@ class Ad(models.Model):
 class Favorite(models.Model):
     user = models.ForeignKey(AUTH_USER_MODEL, on_delete=models.CASCADE)
     ad = models.ForeignKey(Ad, on_delete=models.CASCADE)
+
+    @staticmethod
+    def is_favorite(ad, user):
+        """confirms if an ad is favorite for a said user
+        Arguments:
+            ad {object} -- ad to be checked
+            user {object} -- user to be checked
+        Returns:
+            Booleaan -- True if the ad is indeed favorite for the user,
+            otherwise False
+        """
+        return Favorite.objects.filter(ad=ad, user=user).exists()

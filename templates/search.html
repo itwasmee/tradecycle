@@ -23,11 +23,11 @@
         </form>
     </div>
     {% for ad in results %}
-    <a class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden" href="/ad/{{ ad.id }}">
-        <div class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
+    <div id="{{ad.id}}" class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden">
+        <a href="/ad/{{ ad.id }}" class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
             <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
-        </div>
-        <div class="bg-white p-2 sm:p-4 w-full">
+        </a>
+        <a href="/ad/{{ ad.id }}" class="bg-white p-2 sm:p-4 w-full">
             <div class="sm:mb-8">
                 <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
                 <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
@@ -41,8 +41,40 @@
                     <p class="text-gray-600">{{ ad.created_at.day }}/{{ ad.created_at.month }}, à {{ ad.created_at.time }}</p>
                 </div>
             </div>
+        </a>
+        <div x-data="favAd"  class="p-3 cursor-pointer appearance-none  mb-auto">
+            <button x-data="{ isFav: false }" x-on:click="favAd({{ad.id}})" @click="isFav = !isFav" class="focus:outline-none">
+                {% if ad.is_fav is True %}
+                    </span x-data="{ isFav: true }">
+                    {% else %}
+                    </span x-data="{ isFav: false }">
+                {% endif %}
+                <svg x-show="isFav" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-5 text-red-600 fill-current hover:text-gray-400">
+                    <path d="M10 3.22l-.61-.6a5.5 5.5 0 0 0-7.78 7.77L10 18.78l8.39-8.4a5.5 5.5 0 0 0-7.78-7.77l-.61.61z"/>
+                </svg>
+                <svg x-show="!isFav" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-5 text-gray-400 fill-current hover:text-red-600">
+                    <path d="M10 3.22l-.61-.6a5.5 5.5 0 0 0-7.78 7.77L10 18.78l8.39-8.4a5.5 5.5 0 0 0-7.78-7.77l-.61.61z"/>
+                </svg>
+            </button>
         </div>
-    </a>
+    </div>
     {% endfor %}
+    <script>
+        function favAd(id) {
+            console.log(id);
+            fetch("/fav_ad/" + id, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                mode: "same-origin"
+            }).then(function(response) {
+                console.log(response);
+            }).catch((err) => {
+                console.error(err);
+            });
+        };
+    </script>
 </div>
+
 {% endblock %}

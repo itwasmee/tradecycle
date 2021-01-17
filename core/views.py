@@ -90,7 +90,8 @@ def lower_quality(path):
 
 
 class SendMessageView(FormView, DetailView):
-    """ Displays form used to send a message to the poster of the ad and sends it upon form validation"""
+    """ Displays form used to send a message to the poster of the ad and sends
+    it upon form validation"""
 
     model = Ad
     form_class = MessageForm
@@ -107,11 +108,3 @@ class SendMessageView(FormView, DetailView):
             recipient_list=[user.email],
         )
         return redirect("/")
-
-
-class FavoritesView(LoginRequiredMixin, ListView):
-    model = Ad
-    paginate_by = 20
-    
-    def get_context_data(self, request):
-        pass

@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="container mx-auto px-5 my-6 sm:my-16">
+    <div class="text-center text-2xl text-black my-12">Annonces enregistrées</div>
+    {% if empty == True %}
+    <p class="text-center">Vous n'avez pas encore d'annonce dans vos favoris.</p>
+    {% endif %}
+    {% for fav in favs %}
+    <div id="{{fav.ad.id}}" class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden">
+        <a href="/ad/{{ fav.ad.id }}" class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
+            <img class="object-cover w-full h-full" src="{% static 'media/'|add:fav.ad.image.url %}" title="{{ fav.ad.title }}">
+        </a>
+        <a href="/ad/{{ fav.ad.id }}" class="bg-white p-2 sm:p-4 w-full">
+            <div class="sm:mb-8">
+                <div class="text-gray-900 font-bold sm:text-xl">{{ fav.ad.title }}</div>
+                <p class="text-green-700 sm:text-lg">{{ fav.ad.action }}</p>
+                
+            </div>
+            <div class="pt-3">
+                <p class="text-gray-600 items-center text-sm sm:text-base uppercase font-bold tracking-wide">
+                    {{ fav.ad.city }}
+                </p>
+                <div class="text-sm sm:text-md">
+                    <p class="text-gray-600">{{ fav.ad.created_at.day }}/{{ fav.ad.created_at.month }}, à {{ fav.ad.created_at.time }}</p>
+                </div>
+            </div>
+        </a>
+        <div x-data="favAd"  class="p-3 cursor-pointer appearance-none  mb-auto">
+            <button x-on:click="favAd({{fav.ad.id}})" class="focus:outline-none">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-5 text-gray-400 fill-current hover:text-red-600">
+                    <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
+                </svg>
+            </button>
+        </div>
+    </div>
+    {% endfor %}
+    <script>
+        function favAd(id) {
+            console.log(id);
+            if (confirm("Etes vous sure de vouloir retirer cette annonce de vos favoris?")) {
+            fetch("/fav_ad/" + id, {
+                method: "GET",
+                headers: {
+                    "Content-type": "application/json; charset=UTF-8"
+                },
+                mode: "same-origin"
+            }).then(function(response) {
+                document.getElementById(id).remove();
+                console.log(response);
+            }).catch((err) => {
+                console.error(err);
+            });
+            } else {
+                null
+            };
+        };
+    </script>
+</div>
+{% endblock %}

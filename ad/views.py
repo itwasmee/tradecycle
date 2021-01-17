@@ -1,11 +1,11 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.shortcuts import redirect
-from django.views.generic import DetailView
+from django.views.generic import DetailView, ListView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView
 
 from .forms import AdPostForm
-from .models import Ad
+from .models import Ad, Favorite
 
 # Create your views here.
 
@@ -37,3 +37,35 @@ class DeleteAdView(LoginRequiredMixin, View):
 class DetailAdView(DetailView):
     model = Ad
     pk_url_kwarg = "pk"
+
+
+class FavoritesView(LoginRequiredMixin, ListView):
+    model = Favorite
+    paginate_by = 20
+
+    def get_context_data(self, **kwargs):
+        context = super(FavoritesView, self).get_context_data(**kwargs)
+        user = self.request.user
+        favs = Favorite.objects.filter(user=user)
+        if favs.exists():
+            context["favs"] = favs
+        else:
+            context["empty"] = True
+        return context
+
+
+class FavAddView(LoginRequiredMixin, View):
+    model = Favorite
+    success_url = "/"
+    slug_field = "id"
+
+    def get(self, *args, **kwargs):
+        user = self.request.user
+        ad_id = self.kwargs['pk']
+        ad = Ad.objects.get(id=ad_id)
+        if Favorite.objects.filter(user=user, ad=ad).exists():
+            Favorite.objects.filter(user=user, ad=ad).delete()
+        else:
+            fav = Favorite(user=user, ad=ad)
+            fav.save()
+        return redirect('/')
