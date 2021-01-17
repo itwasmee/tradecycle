@@ -23,10 +23,9 @@ class AdPostView(LoginRequiredMixin, CreateView):
 
 class DeleteAdView(LoginRequiredMixin, View):
     model = Ad
-    success_url = "/"
     slug_field = "id"
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         user = self.request.user
         ad_id = self.kwargs['pk']
         ad = Ad.objects.get(id=ad_id, user_id=user)
@@ -56,10 +55,9 @@ class FavoritesView(LoginRequiredMixin, ListView):
 
 class FavAddView(LoginRequiredMixin, View):
     model = Favorite
-    success_url = "/"
     slug_field = "id"
 
-    def get(self, *args, **kwargs):
+    def post(self, *args, **kwargs):
         user = self.request.user
         ad_id = self.kwargs['pk']
         ad = Ad.objects.get(id=ad_id)

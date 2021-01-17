@@ -75,7 +75,7 @@ urlpatterns = [
     ),
     path(
         "recherche/",
-        SearchView.as_view(),
+        TemplateView.as_view(template_name="search.html"),
         name="recherche",
     ),
     path(

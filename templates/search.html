@@ -42,13 +42,9 @@
                 </div>
             </div>
         </a>
-        <div x-data="favAd"  class="p-3 cursor-pointer appearance-none  mb-auto">
-            <button x-data="{ isFav: false }" x-on:click="favAd({{ad.id}})" @click="isFav = !isFav" class="focus:outline-none">
-                {% if ad.is_fav is True %}
-                    </span x-data="{ isFav: true }">
-                    {% else %}
-                    </span x-data="{ isFav: false }">
-                {% endif %}
+        <form x-data="favAd" class="p-3 cursor-pointer appearance-none  mb-auto" method="POST">
+            {% csrf_token %}
+            <button type="submit" x-data="{ isFav: {{ad.is_fav}}}" x-on:click.prevent="favAd({{ad.id}})" @click="isFav = !isFav" class="focus:outline-none">
                 <svg x-show="isFav" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-5 text-red-600 fill-current hover:text-gray-400">
                     <path d="M10 3.22l-.61-.6a5.5 5.5 0 0 0-7.78 7.77L10 18.78l8.39-8.4a5.5 5.5 0 0 0-7.78-7.77l-.61.61z"/>
                 </svg>
@@ -56,18 +52,20 @@
                     <path d="M10 3.22l-.61-.6a5.5 5.5 0 0 0-7.78 7.77L10 18.78l8.39-8.4a5.5 5.5 0 0 0-7.78-7.77l-.61.61z"/>
                 </svg>
             </button>
-        </div>
+        </form>
     </div>
     {% endfor %}
     <script>
+        const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         function favAd(id) {
-            console.log(id);
+            console.log("/fav_ad/" + id);
             fetch("/fav_ad/" + id, {
-                method: "GET",
+                method: "POST",
                 headers: {
-                    "Content-type": "application/json; charset=UTF-8"
+                    "Content-type": "application/json; charset=UTF-8",
+                    "X-CSRFToken": csrf
                 },
-                mode: "same-origin"
+                credentials: "same-origin"
             }).then(function(response) {
                 console.log(response);
             }).catch((err) => {

@@ -34,4 +34,7 @@ class Favorite(models.Model):
             Booleaan -- True if the ad is indeed favorite for the user,
             otherwise False
         """
-        return Favorite.objects.filter(ad=ad, user=user).exists()
+        if Favorite.objects.filter(ad=ad, user=user).exists():
+            return "true"
+        else:
+            return "false"
