@@ -165,8 +165,7 @@ LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/media")
-"""MEDIA_ROOT = os.path.join(BASE_DIR, "static/test_media" if DEBUG else "static/media")"""
+MEDIA_ROOT = os.path.join(BASE_DIR, "static/test_media" if DEBUG else "static/media")
 MEDIA_URL = '/'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

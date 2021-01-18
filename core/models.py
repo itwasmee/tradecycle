@@ -17,7 +17,7 @@ class Profile(models.Model):
         processors=[ResizeToFill(128, 128)],
         format='JPEG',
         options={'quality': 100},
-        default='static/profile/user.svg'
+        default='profile/user.svg'
         )
     activity = models.CharField(
         max_length=30, blank=True, default='Non renseigné'
