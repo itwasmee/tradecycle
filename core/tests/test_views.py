@@ -1,10 +1,12 @@
+from shutil import rmtree
+
+from ad.models import Ad
+from django.conf import settings
+from django.contrib.auth import get_user_model
 from django.test import TestCase
 from django.urls import reverse
-from django.contrib.auth import get_user_model
-from shutil import rmtree
-from django.conf import settings
+
 from ..models import Profile
-from ad.models import Ad
 
 
 class TestHomePageView(TestCase):
@@ -41,14 +43,15 @@ class TestContactPageView(TestCase):
 
     def test_contactform(self):
         response = self.client.post(
-            "contact",
+            "/contact/",
             {
                 "email": "tradecycle@tradecycle.fr",
                 "subject": "testing the contact form",
                 "message": "Hello World",
             },
+            follow=True
         )
-        self.assertEqual(response.status_code, 300)
+        self.assertEqual(response.status_code, 200)
 
 
 class TestProfileCreation(TestCase):
@@ -77,7 +80,6 @@ class TestLoggedIn(TestCase):
         )
         self.client.login(username='Jojo', password='itwasmedio')
         self.response = self.client.get("/profil/")
-        print('HELLO')
 
     def tearDown(self):
         rmtree(settings.MEDIA_ROOT, ignore_errors=True)
@@ -92,7 +94,6 @@ class TestLoggedIn(TestCase):
         self.assertTemplateUsed("profil.html")
 
     def test_content_match(self):
-        print(self.response)
         self.assertContains(self.response, text="Jojo")
 
 

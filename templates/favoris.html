@@ -27,23 +27,26 @@
                 </div>
             </div>
         </a>
-        <div x-data="favAd"  class="p-3 cursor-pointer appearance-none  mb-auto">
-            <button x-on:click="favAd({{fav.ad.id}})" class="focus:outline-none">
+        <form x-data="favAd"  class="p-3 cursor-pointer appearance-none  mb-auto" method="POST">
+            {% csrf_token %}
+            <button x-on:click.prevent="favAd({{fav.ad.id}})" class="focus:outline-none">
                 <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-5 text-gray-400 fill-current hover:text-red-600">
                     <path d="M10 8.586L2.929 1.515 1.515 2.929 8.586 10l-7.071 7.071 1.414 1.414L10 11.414l7.071 7.071 1.414-1.414L11.414 10l7.071-7.071-1.414-1.414L10 8.586z"/>
                 </svg>
             </button>
-        </div>
+        </form>
     </div>
     {% endfor %}
     <script>
+        const csrf = document.getElementsByName("csrfmiddlewaretoken")[0].value;
         function favAd(id) {
             console.log(id);
             if (confirm("Etes vous sure de vouloir retirer cette annonce de vos favoris?")) {
             fetch("/fav_ad/" + id, {
-                method: "GET",
+                method: "POST",
                 headers: {
-                    "Content-type": "application/json; charset=UTF-8"
+                    "Content-type": "application/json; charset=UTF-8",
+                    "X-CSRFToken": csrf
                 },
                 mode: "same-origin"
             }).then(function(response) {
@@ -57,5 +60,22 @@
             };
         };
     </script>
+    <span class="flex mx-auto w-10 mt-16">
+        {% if favs.has_previous %} 
+        <a href="?page={{ favs.previous_page_number }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-8"><path d="M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z"/></svg>
+        </a>
+        {% endif %}
+
+        <span class="text-xl font-bold text-black">
+            {{ favs.number }}
+        </span>
+
+        {% if favs.has_next %}
+            <a href="?page={{ favs.next_page_number }}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-8"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
+            </a>
+        {% endif %}
+    </span>
 </div>
 {% endblock %}

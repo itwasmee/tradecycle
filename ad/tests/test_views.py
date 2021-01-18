@@ -1,9 +1,10 @@
-from django.test import TestCase
-from django.contrib.auth import get_user_model
-from ..models import Ad
 from shutil import rmtree
+
 from django.conf import settings
-from django.test import Client
+from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+
+from ..models import Ad
 
 myclient = Client()
 
@@ -39,7 +40,7 @@ class TestAdPostView(TestCase):
 
     def test_redirect_after_submit(self):
         self.assertEqual(self.response.status_code, 200)
-        self.assertTemplateUsed('accueil.html')
+        self.assertTemplateUsed('merci-annonce.html')
 
     def test_ad_saved(self):
         self.assertEqual(Ad.objects.get(title='cafe').title, 'cafe')
@@ -116,9 +117,8 @@ class TestDeleteAdView(TestCase):
             )
         data.close()
         ad = Ad.objects.get(title='cafe')
-        cls.ad_delete_response = myclient.get(
-            f'/delete_ad/{ad.id}',
-            follow=True
+        cls.ad_delete_response = myclient.post(
+            f'/delete_ad/{ad.id}'
         )
 
     @classmethod
@@ -181,3 +181,99 @@ class TestDetailAdView(TestCase):
 
     def test_context_match(self):
         self.assertContains(self.ad_get_response, 'cafe')
+
+
+class TestFavoritesView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+        cls.resp = get_user_model().objects.create_user(
+            username='jojo',
+            password='itwasmedio',
+            email='jojo@dio.com'
+            )
+        myclient.login(username='jojo', password='itwasmedio')
+        with open('ad/tests/1.jpg', 'rb') as data:
+            cls.ad_post_response = myclient.post(
+                '/deposer-une-annonce/',
+                {
+                    'action': 'O',
+                    'title': 'cafe',
+                    'description': 'donne cafe',
+                    'image': data,
+                    'city': 'Paris',
+                },
+                follow=True
+            )
+        data.close()
+        cls.ad_id = Ad.objects.get(title='cafe').id
+        cls.favs_response = myclient.get('/favoris/')
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+
+    # status code
+    def test_status_code(self):
+        self.assertEqual(self.favs_response.status_code, 200)
+
+    # check if empty by default
+    def test_empty(self):
+        self.assertEqual(self.favs_response.context["empty"], True)
+
+    # template
+    def test_template_used(self):
+        self.assertTemplateUsed('favoris.html')
+
+    # check if favorites added
+    def test_fav_displays(self):
+        myclient.post(f'/fav_ad/{self.ad_id}', {})
+        favs_response = myclient.get('/favoris/')
+        self.assertEqual(favs_response.context["favs"][0].ad.title, "cafe")
+
+
+class TestFavoritesAddView(TestCase):
+    @classmethod
+    def setUpTestData(cls):
+        rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+        cls.resp = get_user_model().objects.create_user(
+            username='jojo',
+            password='itwasmedio',
+            email='jojo@dio.com'
+            )
+        myclient.login(username='jojo', password='itwasmedio')
+        with open('ad/tests/1.jpg', 'rb') as data:
+            cls.ad_post_response = myclient.post(
+                '/deposer-une-annonce/',
+                {
+                    'action': 'O',
+                    'title': 'cafe',
+                    'description': 'donne cafe',
+                    'image': data,
+                    'city': 'Paris',
+                },
+                follow=True
+            )
+        data.close()
+        cls.ad = Ad.objects.get(title='cafe')
+        cls.fav_ad_response = myclient.post(f'/fav_ad/{cls.ad.id}')
+
+    @classmethod
+    def tearDownClass(cls):
+        super().tearDownClass()
+        rmtree(settings.MEDIA_ROOT, ignore_errors=True)
+
+    # check status code
+    def test_status_code(self):
+        self.assertEqual(self.fav_ad_response.status_code, 200)
+
+    # check favorite is added and deleted
+    def test_fav_added(self):
+        favs_response = myclient.get('/favoris/')
+        self.assertEqual(favs_response.context["favs"][0].ad.title, "cafe")
+
+    def test_fav_removed(self):
+        myclient.post(f'/fav_ad/{self.ad.id}')
+        favs_response = myclient.get('/favoris/')
+        self.assertEqual(favs_response.context["empty"], True)

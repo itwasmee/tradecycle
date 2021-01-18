@@ -1,5 +1,7 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
-from django.shortcuts import redirect
+from django.core.exceptions import ObjectDoesNotExist
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse
 from django.views.generic import DetailView, ListView
 from django.views.generic.base import View
 from django.views.generic.edit import CreateView
@@ -13,7 +15,7 @@ from .models import Ad, Favorite
 class AdPostView(LoginRequiredMixin, CreateView):
     form_class = AdPostForm
     model = Ad
-    success_url = '/'
+    success_url = '/merci-annonce/'
 
     def form_valid(self, form):
         form.instance.user_id = self.request.user
@@ -30,7 +32,7 @@ class DeleteAdView(LoginRequiredMixin, View):
         ad_id = self.kwargs['pk']
         ad = Ad.objects.get(id=ad_id, user_id=user)
         ad.delete()
-        return redirect('/')
+        return HttpResponse()
 
 
 class DetailAdView(DetailView):
@@ -45,8 +47,19 @@ class FavoritesView(LoginRequiredMixin, ListView):
     def get_context_data(self, **kwargs):
         context = super(FavoritesView, self).get_context_data(**kwargs)
         user = self.request.user
-        favs = Favorite.objects.filter(user=user)
-        if favs.exists():
+        favs = Favorite.objects.filter(user=user).order_by("ad")
+        queryset = favs
+        page = self.request.GET.get("page")
+        paginator = Paginator(favs, self.paginate_by)
+
+        try:
+            favs = paginator.page(page)
+        except PageNotAnInteger:
+            favs = paginator.page(1)
+        except EmptyPage:
+            favs = paginator.page(paginator.num_pages)
+
+        if queryset.exists():
             context["favs"] = favs
         else:
             context["empty"] = True
@@ -61,9 +74,11 @@ class FavAddView(LoginRequiredMixin, View):
         user = self.request.user
         ad_id = self.kwargs['pk']
         ad = Ad.objects.get(id=ad_id)
-        if Favorite.objects.filter(user=user, ad=ad).exists():
-            Favorite.objects.filter(user=user, ad=ad).delete()
-        else:
+        try:
+            # Favorite.objects.get(user=user, ad=ad).id:
+            Favorite.objects.get(user=user, ad=ad).delete()
+        except ObjectDoesNotExist:
             fav = Favorite(user=user, ad=ad)
             fav.save()
-        return redirect('/')
+
+        return HttpResponse()

@@ -4,12 +4,12 @@ from ad.models import Ad
 from django.contrib.auth import get_user_model
 from django.contrib.auth.mixins import LoginRequiredMixin
 from django.core.mail import send_mail
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.http import HttpResponse
 from django.shortcuts import redirect
 from django.views.generic.detail import DetailView
 from django.views.generic.edit import FormView
-from django.views.generic.list import ListView
 from tradecycle.settings import DEFAULT_FROM_EMAIL, MEDIA_ROOT
-from PIL import Image
 
 from core.forms import ContactForm, MessageForm, ProfileForm
 from core.models import Profile
@@ -19,15 +19,15 @@ class ContactPageView(FormView):
     """ view that displays the contact form"""
 
     form_class = ContactForm
-    success_url = "/thank-you/"
+    success_url = "/merci/"
 
     def form_valid(self, form):
         """if the form is valid, sends the email with following args"""
         send_mail(
             subject=form.cleaned_data.get("subject"),
             message=form.cleaned_data.get("message"),
-            from_email=DEFAULT_FROM_EMAIL,
-            recipient_list=[form.cleaned_data.get("email")],
+            from_email=form.cleaned_data.get("email"),
+            recipient_list=[DEFAULT_FROM_EMAIL],
         )
         return super(ContactPageView, self).form_valid(form)
 
@@ -37,6 +37,7 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
 
     model = Profile
     form_class = ProfileForm
+    paginate_by = 10
 
     def get_object(self):
         return Profile.objects.get(user=self.request.user)
@@ -54,9 +55,7 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
             profile.activity = form.instance.activity
         if form.instance.location != "":
             profile.location = form.instance.location
-        if Profile.objects.get(
-            user=user
-        ).picture:  # remove old picture if new one is submitted
+        if Profile.objects.get(user=user).picture:  # remove old picture if new one is submitted
             name = "/user_profile/" + profile.picture.name
             location = MEDIA_ROOT
             path = location + name
@@ -65,28 +64,24 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
             except FileNotFoundError:
                 print(f"No picture found at {path}")
         profile.save()
-        lower_quality(
-            MEDIA_ROOT + profile.picture.url
-        )  # lower resolution for profile picture
         return redirect("/profil/")
 
     def get_context_data(self, **kwargs):
         """ context : ads posted by user"""
         context_data = super(ProfilePageView, self).get_context_data(**kwargs)
         user = get_user_model().objects.get(username=self.request.user)
-        user_ads = Ad.objects.filter(user_id=user)
-        context_data["user_ads"] = user_ads
+        ads = Ad.objects.filter(user_id=user).order_by("created_at")
+        page = self.request.GET.get("page")
+        paginator = Paginator(ads, self.paginate_by)
+
+        try:
+            ads = paginator.page(page)
+        except PageNotAnInteger:
+            ads = paginator.page(1)
+        except EmptyPage:
+            ads = paginator.page(paginator.num_pages)
+        context_data["user_ads"] = ads
         return context_data
-
-
-def lower_quality(path):
-    """lowers the qulity of the image posted
-
-    Args:
-        path (str): path of the submitted img
-    """
-    image_file = Image.open(path)
-    image_file.save(path, quality=50)
 
 
 class SendMessageView(FormView, DetailView):
@@ -95,6 +90,7 @@ class SendMessageView(FormView, DetailView):
 
     model = Ad
     form_class = MessageForm
+    success_url = "/message-envoye/"
 
     def form_valid(self, form, **kwargs):
         """ the email is sent if the form is valid"""
@@ -107,4 +103,4 @@ class SendMessageView(FormView, DetailView):
             from_email="tradecycler@gmail.com",
             recipient_list=[user.email],
         )
-        return redirect("/")
+        return HttpResponse()

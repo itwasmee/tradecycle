@@ -1,4 +1,5 @@
 from django import forms
+
 from .models import Ad
 
 
@@ -29,9 +30,9 @@ class AdPostForm(forms.ModelForm):
         fields = ["action", "title", "description", "city", "image"]
         labels = {
             "title": "Titre",
-            "action": "Vous",
+            "action": "Je",
             "description": "Description",
-            "image": "Ajoutez une image",
+            "image": "Ajouter une image",
             "city": "Lieu"
         }
         widgets = {

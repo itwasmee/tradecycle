@@ -1,20 +1,19 @@
-from django.shortcuts import render
-from django.views.generic.list import ListView
-from django.core.paginator import Paginator, PageNotAnInteger, EmptyPage
 from ad.models import Ad, Favorite
+from django.core.paginator import EmptyPage, PageNotAnInteger, Paginator
+from django.views.generic.list import ListView
 
 
 class SearchView(ListView):
     """ displays ads related to the search terms or city"""
     model = Ad
-    paginate_by = 50
+    paginate_by = 20
 
     def get_context_data(self, **kwargs):
         context = super(SearchView, self).get_context_data(**kwargs)
         query = self.request.GET.get("query")
         location = self.request.GET.get("location")
 
-        if location is True:
+        if location is True and type(location) == str:
             queryset = Ad.objects.filter(
                 title__unaccent__icontains=query  # unaccent is a Postgresql specific module
             ).filter(
@@ -22,7 +21,7 @@ class SearchView(ListView):
             ).order_by('created_at')
         else:
             queryset = Ad.objects.filter(
-                title__unaccent__icontains=query  # TODO add 'field required' to one field only
+                title__unaccent__icontains=query
             ).order_by('created_at')
 
         page = self.request.GET.get("page")
@@ -35,9 +34,8 @@ class SearchView(ListView):
         except EmptyPage:
             results = paginator.page(paginator.num_pages)
         context["results"] = results
+        context["query"] = query
         for ad in results:
             if self.request.user.id:
                 ad.is_fav = Favorite.is_favorite(ad, self.request.user)
-            else:
-                ad.is_fav = False
         return context

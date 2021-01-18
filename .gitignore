@@ -15,6 +15,7 @@ htmlcov/
 .tox/
 .nox/
 .coverage
+.coveragerc
 .coverage.*
 .cache
 nosetests.xml
@@ -24,7 +25,7 @@ coverage.xml
 .hypothesis/
 .pytest_cache/
 pytestdebug.log
-
+pytest.ini
 # Environments
 .env
 */.env

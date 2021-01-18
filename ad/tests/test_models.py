@@ -1,7 +1,7 @@
-from django.test import TestCase
 from django.contrib.auth import get_user_model
+from django.test import Client, TestCase
+
 from ..models import Ad
-from django.test import Client
 
 myclient = Client()
 

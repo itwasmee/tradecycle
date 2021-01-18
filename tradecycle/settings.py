@@ -53,6 +53,9 @@ INSTALLED_APPS = [
 
     'django.contrib.postgres',
 
+    # ImageKit
+
+    'imagekit',
 ]
 
 MIDDLEWARE = [

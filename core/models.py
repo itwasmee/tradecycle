@@ -1,4 +1,6 @@
 from django.db import models
+from imagekit.models import ProcessedImageField
+from imagekit.processors import ResizeToFill
 from tradecycle.settings import AUTH_USER_MODEL
 
 # Create your models here.
@@ -8,8 +10,14 @@ class Profile(models.Model):
     user = models.OneToOneField(
         AUTH_USER_MODEL, on_delete=models.CASCADE
         )
-    picture = models.ImageField(
-        upload_to='user_profile/', blank=True, default=False
+    # We use ImageKit to manipulate uploaded image
+    picture = ProcessedImageField(
+        upload_to='user_profile/',
+        blank=True,
+        processors=[ResizeToFill(128, 128)],
+        format='JPEG',
+        options={'quality': 100},
+        default='static/profile/user.svg'
         )
     activity = models.CharField(
         max_length=30, blank=True, default='Non renseigné'

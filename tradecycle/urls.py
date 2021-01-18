@@ -14,7 +14,7 @@ Including another URLconf
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
 from django.contrib import admin
-from django.urls import path, include, re_path
+from django.urls import path
 from django.contrib.auth.views import LoginView, LogoutView
 from accounts.forms import UserRegistrationForm, AuthenticationForm
 from django.views.generic.base import TemplateView
@@ -110,11 +110,11 @@ urlpatterns = [
         name="send-message"
     ),
     path(
-        "thank-you/",
+        "merci/",
         TemplateView.as_view(
-            template_name="thank-you.html"
+            template_name="merci-contact.html"
         ),
-        name="thank-you"
+        name="merci"
     ),
     path(
         "mentions-legales/",
@@ -142,4 +142,19 @@ urlpatterns = [
         FavAddView.as_view(),
         name="fav_ad",
     ),
+    path(
+        "message-envoye/",
+        TemplateView.as_view(
+            template_name="message-envoye.html"
+        ),
+        name="message-envoye"
+    ),
+    path(
+        "merci-annonce/",
+        TemplateView.as_view(
+            template_name="merci-annonce.html"
+        ),
+        name="merci-annonce"
+    ),
+
 ]

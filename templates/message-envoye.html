@@ -1,0 +1,9 @@
+{% extends 'base.html' %}
+{% load static %}
+{% block content %}
+
+<div class="container mx-auto px-5 mt-20 text-center text-2xl text-black">
+Votre message a bien été envoyé, vous allez etre redirigé vers l'annonce
+</div>
+<meta http-equiv="refresh" content="5;url={% url 'accueil' %}">
+{% endblock %}

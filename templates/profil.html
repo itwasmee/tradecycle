@@ -5,12 +5,10 @@
     <div class="container mx-auto px-5">
         <div class=" sm:flex sm:my-16 my-6">
             <div>
-                {% if profile.picture != False %}
-                    <img class="mx-auto object-cover rounded-full border-2 border-transparent sm:w-32 sm:h-32 w-24 h-24" src="{% static 'media/'|add:profile.picture.url %}" alt="">
+                {% if profile.picture.name != 'user.svg' %}
+                    <img class="mx-auto object-cover rounded-full border-2 border-transparent sm:w-32 sm:h-32 w-24 h-24" src="{% static 'media'|add:profile.picture.url %}" alt="">
                 {% else %}
-                    <svg class="mx-auto fill-current text-gray-500 rounded-full border-2 border-transparent h-32" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20">
-                        <path d="M5 5a5 5 0 0 1 10 0v2A5 5 0 0 1 5 7V5zM0 16.68A19.9 19.9 0 0 1 10 14c3.64 0 7.06.97 10 2.68V20H0v-3.32z"/>
-                    </svg>
+                {% static 'media'|add:profile.picture.url %}
                 {% endif %}
             </div>
             <div class="sm:ml-5 sm:self-end">
@@ -65,16 +63,19 @@
         </div>
     </div>
 </div>
-<div class="container mx-auto px-5 my-6 sm:my-16">
+<div class="container mx-auto px-5 my-6 sm:my-16 text-center">
+    {% if not user_ads %}
+    <span class="text-xl text-gray-700">Vous n'avez pas encore posté d'annonce</span>
+    {% endif %}
     {% for ad in user_ads %}
     <div id="{{ ad.id }}" class="cursor-pointer w-11/12 sm:w-5/6 md:w-9/10 lg:w-2/3 flex mx-auto mb-5 border border-gray-400 hover:shadow-md rounded-md overflow-hidden">
         <a href="/ad/{{ ad.id }}" class="flex-none h-32 sm:h-auto w-32 sm:w-48 text-center overflow-hidden bg-gray-400">
-            <img class="object-cover w-full h-full" src="{% static 'media/'|add:ad.image.url %}" title="{{ ad.title }}">
+            <img class="object-cover w-full h-full" src="{% static 'media'|add:ad.image.url %}" title="{{ ad.title }}">
         </a>
         <a href="/ad/{{ ad.id }}" class="bg-white p-2 sm:p-4 w-full">
             <div class="sm:mb-8">
                 <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
-                <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
+                <p class="text-green-700 sm:text-lg">{{ ad.get_action_display }}</p>
                 
             </div>
             <div class="pt-3">
@@ -119,5 +120,24 @@
             }
         };
     </script>
+    {% if user_ads.is_paginated %}
+    <span class="flex mx-auto w-10 mt-16">
+        {% if user_ads.has_previous %}  
+        <a href="?page={{ user_ads.previous_page_number }}">
+            <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-8"><path d="M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z"/></svg>
+        </a>
+        {% endif %}
+
+        <span class="text-xl font-bold text-black">
+            {{ user_ads.number }}
+        </span>
+
+        {% if user_ads.has_next %}
+            <a href="?page={{ user_ads.next_page_number }}">
+                <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-8"><path d="M12.95 10.707l.707-.707L8 4.343 6.586 5.757 10.828 10l-4.242 4.243L8 15.657l4.95-4.95z"/></svg>
+            </a>
+        {% endif %}
+    </span>
+    {% endif %}
 </div>
 {% endblock %}
