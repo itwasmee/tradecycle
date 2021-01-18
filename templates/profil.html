@@ -5,10 +5,10 @@
     <div class="container mx-auto px-5">
         <div class=" sm:flex sm:my-16 my-6">
             <div>
-                {% if profile.picture.name != 'user.svg' %}
+                {% if profile.picture.name != 'profile/user.svg' %}
                     <img class="mx-auto object-cover rounded-full border-2 border-transparent sm:w-32 sm:h-32 w-24 h-24" src="{% static 'media'|add:profile.picture.url %}" alt="">
                 {% else %}
-                {% static 'media'|add:profile.picture.url %}
+                <img class="mx-auto object-cover rounded-full border-2 border-transparent sm:w-32 sm:h-32 w-24 h-24" src="{% static ''|add:profile.picture.url %}" alt="">
                 {% endif %}
             </div>
             <div class="sm:ml-5 sm:self-end">

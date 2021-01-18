@@ -23,7 +23,7 @@ environ.Env.read_env()  # reading .env file
 # See https://docs.djangoproject.com/en/3.1/howto/deployment/checklist/
 
 # SECURITY WARNING: keep the secret key used in production secret!
-SECRET_KEY = '1'
+SECRET_KEY = env('KEY')
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
@@ -165,7 +165,7 @@ LOGOUT_REDIRECT_URL = "/"
 AUTH_USER_MODEL = 'accounts.CustomUser'
 AUTHENTICATION_BACKENDS = ['accounts.backends.EmailBackend']
 
-MEDIA_ROOT = os.path.join(BASE_DIR, "static/test_media" if DEBUG else "static/media")
+MEDIA_ROOT = os.path.join("static/media/")
 MEDIA_URL = '/'
 
 EMAIL_BACKEND = "django.core.mail.backends.smtp.EmailBackend"

@@ -45,24 +45,32 @@ class ProfilePageView(LoginRequiredMixin, DetailView, FormView):
     def form_valid(self, form):
         user = get_user_model().objects.get(id=self.request.user.id)
         profile = Profile.objects.get(user=user.id)
-        if form.instance.picture:  # renaming of the image
+        print(form.instance.picture)
+        if form.instance.picture == "profile/user.svg": # default image set in models
+            pass
+        elif form.instance.picture:  
+            if Profile.objects.get(user=user).picture:  
+                print(Profile.objects.get(user=user).picture.name)
+                name = profile.picture.name
+                location = MEDIA_ROOT
+                path = location + name
+            try: # remove old picture if new one is submitted
+                os.remove(path)
+                print(path, 'deleted')
+            except FileNotFoundError:
+                print(f"No picture found at {path}")
+
             profile.picture = form.instance.picture
             profile.picture.name = (
-                f"{user.id}.{profile.picture.name.lower().split('.').pop(1)}"
+                f"{user.username}.{profile.picture.name.lower().split('.').pop(1)}" # renaming of the image
             )
-
+        else:
+            pass
         if form.instance.activity != "":
             profile.activity = form.instance.activity
         if form.instance.location != "":
             profile.location = form.instance.location
-        if Profile.objects.get(user=user).picture:  # remove old picture if new one is submitted
-            name = "/user_profile/" + profile.picture.name
-            location = MEDIA_ROOT
-            path = location + name
-            try:
-                os.remove(path)
-            except FileNotFoundError:
-                print(f"No picture found at {path}")
+        
         profile.save()
         return redirect("/profil/")
 
