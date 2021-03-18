@@ -30,7 +30,7 @@
         <a href="/ad/{{ ad.id }}" class="bg-white p-2 sm:p-4 w-full">
             <div class="sm:mb-8">
                 <div class="text-gray-900 font-bold sm:text-xl">{{ ad.title }}</div>
-                <p class="text-green-700 sm:text-lg">{{ ad.action }}</p>
+                <p class="text-green-700 sm:text-lg">{{ ad.get_action_display }}</p>
                 
             </div>
             <div class="pt-3">
@@ -75,8 +75,11 @@
             });
         };
     </script>
+    {% if not results %}
+    <p class="text-gray-600 font-bold text-xl text-center">Aucun résultat ne correspond à cette recherche, veuillez en essayer une autre.</p>
+    {% endif %}
     <span class="flex mx-auto w-10 mt-16">
-        {% if results.has_previous %}  
+        {% if results.has_previous %}
         <a href="?page={{ results.previous_page_number }}{% if request.GET.query %}&query={{ request.GET.query }}{% endif %}{% if request.GET.location %}&location={{ request.GET.location }}{% endif %}">
             <svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 20 20" class="h-8"><path d="M7.05 9.293L6.343 10 12 15.657l1.414-1.414L9.172 10l4.242-4.243L12 4.343z"/></svg>
         </a>

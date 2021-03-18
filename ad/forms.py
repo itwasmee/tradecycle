@@ -6,11 +6,11 @@ from .models import Ad
 class AdPostForm(forms.ModelForm):
     style = "appearance-none border rounded w-full py-2\
             px-3 leading-tight focus:outline-none\
-            focus:shadow-outline my-2"
+            focus:shadow-outline my-3"
 
-    style_radio = "justify-around  flex w-full py-2\
+    style_radio = "flex w-full py-2\
             px-3 leading-tight focus:outline-none\
-            my-1"
+            my-3"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)

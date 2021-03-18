@@ -8,7 +8,7 @@ from django.utils.translation import gettext_lazy as _
 class UserRegistrationForm(UserCreationForm):
     style = "appearance-none border rounded w-full py-2\
             px-3 leading-tight focus:outline-none\
-            focus:shadow-outline my-2"
+            focus:shadow-outline my-3"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -47,7 +47,7 @@ class UserRegistrationForm(UserCreationForm):
 class AuthenticationForm(AuthenticationForm):
     style = "appearance-none border rounded w-full py-2\
             px-3 leading-tight focus:outline-none\
-            focus:shadow-outline my-2"
+            focus:shadow-outline my-3"
 
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
